@@ -3,16 +3,26 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FirstController extends AbstractController
 {
-    #[Route('/first', name: 'app_first')]
-    public function index(): Response
+    #[Route('/', name: 'home')]
+    public function index(SessionInterface $session): Response
     {
-        return $this->render('first/index.html.twig', [
-            'controller_name' => 'FirstController',
-        ]);
+
+        $todos = [
+            'achat' => 'acheter clé usb',
+            'cours' => 'Finaliser mon cours',
+            'correction' => 'corriger mes examems'
+        ];
+        if(!$session->has('todos')) {
+            $session->set('todos', $todos);
+        }
+
+        return $this->render('first/index.html.twig');
     }
 }
