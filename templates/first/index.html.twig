@@ -1,20 +1,26 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <ul>
-        {% for todo in app.session.get('todos') %}
-          <li>
-              {{ todo }}
-          </li>
-        {% endfor %}
-    </ul>
+{% extends 'base.html.twig' %}
 
-</body>
-</html>
+{% block title 'Page des todos' %}
+
+{% block body %}
+
+{% if app.session.flashBag.get('success') is defined %}
+    {% for message in app.session.flashBag.get('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+{% if app.session.flashBag.get('errors') is defined %}
+    {% for message in app.session.flashBag.get('errors') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+    <ol class="list-group">
+        {% for name, content in app.session.get('todos') %}
+            <li class="list-group-item">
+                {{ name }} : {{ content }}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
